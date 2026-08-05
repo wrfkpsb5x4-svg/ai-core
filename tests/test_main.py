@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from ai_core.main import AppConfig, create_app, run
 
 
@@ -24,6 +26,32 @@ class TestAppConfig:
         config = AppConfig(name="test", version="1.0.0")
         assert "name='test'" in repr(config)
         assert "version='1.0.0'" in repr(config)
+
+    def test_strips_whitespace(self) -> None:
+        config = AppConfig(name="  spaced  ", version="  1.0.0  ")
+        assert config.name == "spaced"
+        assert config.version == "1.0.0"
+
+    def test_empty_name_raises(self) -> None:
+        with pytest.raises(ValueError, match="name must not be empty"):
+            AppConfig(name="")
+
+    def test_whitespace_only_name_raises(self) -> None:
+        with pytest.raises(ValueError, match="name must not be empty"):
+            AppConfig(name="   ")
+
+    def test_empty_version_raises(self) -> None:
+        with pytest.raises(ValueError, match="version must not be empty"):
+            AppConfig(version="")
+
+    def test_whitespace_only_version_raises(self) -> None:
+        with pytest.raises(ValueError, match="version must not be empty"):
+            AppConfig(version="   ")
+
+    def test_to_dict(self) -> None:
+        config = AppConfig(name="test", version="1.0.0", debug=True)
+        result = config.to_dict()
+        assert result == {"name": "test", "version": "1.0.0", "debug": True}
 
 
 class TestCreateApp:
@@ -58,3 +86,9 @@ class TestRun:
         result = run(custom)
         assert result["config"]["name"] == "custom-run"
         assert result["config"]["debug"] is True
+
+    def test_run_uses_to_dict(self) -> None:
+        """Ensure run() uses to_dict() for the config output."""
+        custom = AppConfig(name="dict-test", version="9.9.9")
+        result = run(custom)
+        assert result["config"] == custom.to_dict()
