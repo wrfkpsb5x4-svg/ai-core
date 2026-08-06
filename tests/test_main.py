@@ -46,7 +46,7 @@ class TestAppConfig:
 
     def test_whitespace_only_version_raises(self) -> None:
         with pytest.raises(ValueError, match="version must not be empty"):
-            AppConfig(version="   ")
+            AppConfig(version="    ")
 
     def test_to_dict(self) -> None:
         config = AppConfig(name="test", version="1.0.0", debug=True)
@@ -88,7 +88,7 @@ class TestRun:
         assert result["config"]["debug"] is True
 
     def test_run_uses_to_dict(self) -> None:
-        """Ensure run() uses to_dict() for the config output."""
+        """Ensure run() output matches to_dict() structure."""
         custom = AppConfig(name="dict-test", version="9.9.9")
         result = run(custom)
         assert result["config"] == custom.to_dict()
