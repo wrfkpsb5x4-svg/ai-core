@@ -20,7 +20,9 @@ class AppConfig:
         ValueError: If name is empty or version is empty.
     """
 
-    def __init__(self, name: str = "ai-core", version: str = "0.1.0", debug: bool = False) -> None:
+    def __init__(
+        self, name: str = "ai-core", version: str = "0.1.0", debug: bool = False
+    ) -> None:
         if not name or not name.strip():
             raise ValueError("name must not be empty")
         if not version or not version.strip():

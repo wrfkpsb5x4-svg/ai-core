@@ -46,7 +46,7 @@ class TestAppConfig:
 
     def test_whitespace_only_version_raises(self) -> None:
         with pytest.raises(ValueError, match="version must not be empty"):
-            AppConfig(version="   ")
+            AppConfig(version="    ")
 
     def test_to_dict(self) -> None:
         config = AppConfig(name="test", version="1.0.0", debug=True)
