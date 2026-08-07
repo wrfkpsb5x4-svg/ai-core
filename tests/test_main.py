@@ -88,7 +88,7 @@ class TestRun:
         assert result["config"]["debug"] is True
 
     def test_run_uses_to_dict(self) -> None:
-        """Ensure run() output matches to_dict() structure."""
+        """Ensure run() uses to_dict() for the config output."""
         custom = AppConfig(name="dict-test", version="9.9.9")
         result = run(custom)
         assert result["config"] == custom.to_dict()
