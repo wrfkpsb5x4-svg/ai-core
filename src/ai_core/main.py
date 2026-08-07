@@ -70,5 +70,5 @@ def run(config: AppConfig | None = None) -> dict[str, Any]:
     cfg = create_app(config)
     return {
         "status": "ok",
-        "config": {"name": cfg.name, "version": cfg.version, "debug": cfg.debug},
+        "config": cfg.to_dict(),
     }
